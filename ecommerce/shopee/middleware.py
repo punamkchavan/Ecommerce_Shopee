@@ -30,7 +30,7 @@ class AuthenticateUserMiddleware:
         try:
             decoded_token = jwt.decode(
                 token,
-                settings.JWT_SECRET_KEY,  # Using the secret key from settings
+                settings.SECRET_KEY,  # Using the secret key from settings
                 algorithms=['HS256'],
                 options={"verify_signature": False}  # Only decode without verifying signature for this example
             )
