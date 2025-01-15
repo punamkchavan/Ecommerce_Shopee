@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <!-- login.html - Add a script -->
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData).toString();
+
+        fetch('/login/', {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                // Store the JWT token in localStorage (or cookies)
+                localStorage.setItem('jwt_token', data.token);
+                alert('Login successful');
+                // Redirect to user dashboard or another page
+                window.location.href = '/user_dashboard/';
+            } else {
+                alert('Login failed');
+            }
+        })
+        .catch(error => {
+            alert('An error occurred during login');
+            console.error(error);
+        });
+    });
+</script>
+
+</body>
+</html>
