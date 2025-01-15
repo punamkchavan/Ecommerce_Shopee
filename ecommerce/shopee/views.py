@@ -76,18 +76,14 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
-#User_Dashboard_view
 def user_dashboard(request):
-    # Logic for user dashboard
-    return render(request, 'user_dashboard.html')
-#def user_dashboard(request):
-    #if not request.user.is_authenticated:
-        # If there's no user object attached to the request (means JWT was not valid), redirect to home
-        #return redirect('home')
+    if not request.user.is_authenticated:
+        #If there's no user object attached to the request (means JWT was not valid), redirect to home
+        return redirect('home')
 
     # Now you can access request.user and display the authenticated user's data
-    #user = request.user
-    #return render(request, 'user_dashboard.html', {'user': user})
+    user = request.user
+    return render(request, 'user_dashboard.html', {'user': user})
 
 #Logout_view
 def logout(request):

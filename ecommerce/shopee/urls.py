@@ -4,9 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .import views
 urlpatterns = [
-    path('',views.home_view,name='home'),
+    path('home/',views.home_view,name='home'),
     path('register/',views.register_view,name='register'),
-    path('login/', views.login_view, name='login'),
+    path('', views.login_view, name='login'),
     path('user_dashboard/', views.user_dashboard, name='user_dashboard'),
     path('logout/', views.logout, name='logout'),
     
