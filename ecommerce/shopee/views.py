@@ -1,97 +1,73 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .forms import UserRegistrationForm
-from .models import UserData
+import bcrypt
 import jwt
-from django.conf import settings
-from datetime import datetime, timedelta
-from .forms import LoginForm
-from django.contrib.auth import authenticate
+from .models import UserData
+from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 
-#Home_view
-def home_view(req):
-    return render(req,'home.html')
+#Dashboard_view
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
 
-#JWT_Token_view
-def generate_jwt_token(user):
-    """
-    Helper function to generate JWT token after successful registration.
-    """
-    payload = {
-        'user_id': user.id,
-        'exp': datetime.utcnow() + timedelta(days=1),  # Set expiration for 1 day
-        'iat': datetime.utcnow(),  # Issued at
-    }
+def get_registration_page(request):
+    return render(request, 'register.html')
+def get_login_page(request):
+    return render(request, 'login.html')
 
-    # Generate the JWT token using the secret key from settings.py
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-    return token
-#registration_view
-def register_view(request):
+@csrf_exempt
+def post_registration_data(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            # Create new user
-            user = form.save()
+        body = request.POST
+        name = body.get('nameInput')
+        phone_no = body.get('phoneInput')
+        email = body.get('emailInput')
+        password = body.get('passwordInput')
+        
 
-            # Generate JWT token for the new user
-            token = generate_jwt_token(user)
-
-            # Return the token in a JsonResponse
-            return JsonResponse({'message': 'Registration successful', 'token': token})
-
-    else:
-        form = UserRegistrationForm()
-
-    return render(request, 'register.html', {'form': form})
-
-#Login_view
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            # Extract credentials
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            # Try to authenticate the user
-            user = authenticate(request, username=email, password=password)
-
-            if user is not None:
-                # Generate JWT token for the authenticated user
-                token = generate_jwt_token(user)
-
-                # Return the token in a JsonResponse
-                return JsonResponse({'message': 'Login successful', 'token': token})
-
+        try:
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            user = UserData.objects.create(name=name, phone_no=phone_no, email=email, password=hashed_password,)
+            user.save()
+            return JsonResponse({'message': 'success'}, status=201)
+        except Exception as e:
+            if 'unique constraint' in str(e):
+                return JsonResponse({'message': 'exist'}, status=409)
             else:
-                return JsonResponse({'message': 'Invalid credentials'}, status=400)
-        else:
-            return JsonResponse({'message': 'Invalid form data'}, status=400)
-    
+                print(e)
+                return JsonResponse({'message': 'Internal Server Error'}, status=500)
     else:
-        form = LoginForm()
+        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
 
-    return render(request, 'login.html', {'form': form})
+@csrf_exempt
+def check_login(request):
+    if request.method == 'POST':
+        body = request.POST
+        email = body.get('email')
+        password = body.get('password')
 
-def user_dashboard(request):
-    if not request.user.is_authenticated:
-        #If there's no user object attached to the request (means JWT was not valid), redirect to home
-        return redirect('home')
+        try:
+            user = UserData.objects.get(email=email)
 
-    # Now you can access request.user and display the authenticated user's data
-    user = request.user
-    return render(request, 'user_dashboard.html', {'user': user})
+            if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+                payload = {
+                    'user_id': user.id,
+                    'email': user.email
+                }
 
-#Logout_view
-def logout(request):
-    # You can clear the JWT token stored in the client's browser (e.g., in cookies or local storage)
-    response = redirect('home')
+                token = jwt.encode(payload, '8jR2sWnC4xQzHtUyL6vPbM9aZ3gD7eF1sK0oL7jX8wO9tR0hY5sF1iE3oQ1cK6gW2hS4aJ5bP9eV0jU4iO2qD6rH3lN9mS7tP1rY2gT8bA1uO3zR', algorithm='HS256')
+                return JsonResponse({'message': 'success', 'token': token}, status=201)
+            else:
+                return JsonResponse({'message': 'Failed'}, status=401)
+        except UserData.DoesNotExist:
+            return JsonResponse({'message': 'NotExist'}, status=404)
+        except Exception as e:
+            print(e)
+            return JsonResponse({'message': 'Internal Server Error'}, status=500)
+    else:
+        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
     
-    # Clear any JWT-related session data or cookies here if you're storing it
-    # Example: response.delete_cookie('jwt_token')
-    
-    return response
-
+@csrf_exempt
+def get_expense_main_home_page(request):
+    return render(request, 'mainHome.html')
