@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .actions a, .actions form {
+            margin-right: 10px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Product List</h1>
+
+<!-- Search Form -->
+<form method="GET" action="{% url 'product_list' %}">
+    <input type="text" name="search" placeholder="Search Products" value="{{ request.GET.search }}">
+    <button type="submit" class="btn">Search</button>
+</form>
+
+<!-- Filter Form -->
+<form method="GET" action="{% url 'product_list' %}">
+    <label for="category">Filter by Category:</label>
+    <select name="category" id="category">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == request.GET.category|default:'' %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Filter</button>
+</form>
+
+<a href="{% url 'product_add' %}" class="btn btn-primary">Add New Product</a>
+
+<!-- Product Table -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.created_at }}</td>
+            <td class="actions">
+                <a href="{% url 'product_edit' product.id %}" class="btn">Edit</a>
+                <form action="{% url 'product_delete' product.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

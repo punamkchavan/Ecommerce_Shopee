@@ -1,0 +1,17 @@
+<h1>Delete Product</h1>
+
+<p>Are you sure you want to delete the product <strong>"{{ product.name }}"</strong>?</p>
+
+<p>Details:</p>
+<ul>
+    <li><strong>Category:</strong> {{ product.category.name }}</li>
+    <li><strong>Price:</strong> {{ product.price }}</li>
+    <li><strong>Stock:</strong> {{ product.stock }}</li>
+    <li><strong>Active:</strong> {{ product.is_active|yesno:"Yes,No" }}</li>
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+    <a href="{% url 'product_list' %}">Cancel</a>
+</form>
