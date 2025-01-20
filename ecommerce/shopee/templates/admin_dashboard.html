@@ -1,7 +1,71 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-styles.css"> <!-- Link to external CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="dashboard.html" class="logo">Admin Panel</a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="users.html">Users</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="logout.html" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
 
- 
+    <!-- Dashboard Overview Section -->
+    <header class="dashboard-overview">
+        <div class="container">
+            <h1>Welcome, Admin</h1>
+            <p>Here's a quick overview of your e-commerce site.</p>
+        </div>
+    </header>
 
-{% block content %}
- hii i am admin
-{% endblock %}
+    <!-- Key Metrics Section -->
+    <section class="metrics">
+        <div class="container">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h2>Orders</h2>
+                    <p>120</p>
+                    <a href="orders.html" class="btn">View Orders</a>
+                </div>
+                <div class="metric-card">
+                    <h2>Products</h2>
+                    <p>340</p>
+                    <a href="products.html" class="btn">Manage Products</a>
+                </div>
+                <div class="metric-card">
+                    <h2>Users</h2>
+                    <p>1,240</p>
+                    <a href="users.html" class="btn">View Users</a>
+                </div>
+                <div class="metric-card">
+                    <h2>Revenue</h2>
+                    <p>$12,340</p>
+                    <a href="revenue.html" class="btn">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Admin Panel. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

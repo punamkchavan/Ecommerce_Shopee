@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - eCommerce</title>
+    <link rel="stylesheet" href="usershop.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <h1>My eCommerce</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">Cart</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <section class="shop-page">
+            <div class="shop-filters">
+                <h2>Filter Products</h2>
+                <form class="filters-form">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category">
+                        <option value="all">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="home-appliances">Home Appliances</option>
+                    </select>
+                    
+                    <label for="price-range">Price Range:</label>
+                    <input type="range" id="price-range" name="price-range" min="0" max="500" step="10">
+                    <span id="price-range-value">$0 - $500</span>
+
+                    <button type="submit" class="apply-filters">Apply Filters</button>
+                </form>
+            </div>
+
+            <div class="product-list">
+                <h2>Our Products</h2>
+                
+                <!-- Product Items -->
+                <div class="product-item">
+                    <img src="product1.jpg" alt="Product 1" class="product-img">
+                    <h3>Product 1</h3>
+                    <p>$100.00</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+
+                <div class="product-item">
+                    <img src="product2.jpg" alt="Product 2" class="product-img">
+                    <h3>Product 2</h3>
+                    <p>$150.00</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+
+                <div class="product-item">
+                    <img src="product3.jpg" alt="Product 3" class="product-img">
+                    <h3>Product 3</h3>
+                    <p>$80.00</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+
+                <div class="product-item">
+                    <img src="product4.jpg" alt="Product 4" class="product-img">
+                    <h3>Product 4</h3>
+                    <p>$120.00</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 My eCommerce. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+        </div>
+    </footer>
+</body>
+</html>

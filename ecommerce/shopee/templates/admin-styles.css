@@ -1,0 +1,144 @@
+/* General Reset */
+body, h1, h2, h3, p, ul, li, a, div {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f9;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.navbar .nav-links li {
+    margin: 0 1rem;
+}
+
+.navbar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #f04e30;
+}
+
+.navbar .nav-icons a {
+    color: #fff;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+/* Dashboard Overview Section */
+.dashboard-overview {
+    background-color: #444;
+    color: #fff;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.dashboard-overview h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-overview p {
+    font-size: 1.2rem;
+}
+
+/* Metrics Section */
+.metrics {
+    padding: 2rem 1rem;
+}
+
+.metrics .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.metric-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+}
+
+.metric-card h2 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.metric-card p {
+    font-size: 1.5rem;
+    color: #f04e30;
+    margin-bottom: 1rem;
+}
+
+.metric-card .btn {
+    background-color: #333;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.metric-card .btn:hover {
+    background-color: #f04e30;
+}
+
+/* Footer */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Product Management</title>
+    <link rel="stylesheet" href="adminproduct.css"> <!-- Link to external CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="dashboard.html" class="logo">AdminPanel</a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="users.html">Users</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="logout.html" class="logout"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Management Section -->
+    <main class="product-management">
+        <div class="container">
+            <h1>Manage Products</h1>
+
+            <!-- Add Product Button -->
+            <div class="add-product">
+                <button class="btn add-product-btn">Add New Product</button>
+            </div>
+
+            <!-- Product Table -->
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1001</td>
+                        <td>Wireless Headphones</td>
+                        <td>Electronics</td>
+                        <td>$50.00</td>
+                        <td>120</td>
+                        <td>
+                            <button class="btn view">View</button>
+                            <button class="btn edit">Edit</button>
+                            <button class="btn delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1002</td>
+                        <td>Running Shoes</td>
+                        <td>Fashion</td>
+                        <td>$80.00</td>
+                        <td>75</td>
+                        <td>
+                            <button class="btn view">View</button>
+                            <button class="btn edit">Edit</button>
+                            <button class="btn delete">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 AdminPanel. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
