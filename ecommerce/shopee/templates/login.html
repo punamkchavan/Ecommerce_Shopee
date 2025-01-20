@@ -73,7 +73,7 @@
                                 class="img-fluid" alt="Login">
                         </div>
                         <div class="col-md-8 col-lg-6 col-xl-5 offset-xl-1 my-lg-5 py-lg-5">
-                            <form id="loginForm" method="post" action="/user/check-login">
+                            <form id="loginForm" method="POST" action="/user/check-login">
                                 {% csrf_token %}
                                 <p class="text-center h1 fw-bold mb-5 mt-4">Login</p>
                                 <div class="form-outline mb-4">
@@ -168,6 +168,7 @@
         const response = await axios('/user/check-login', {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken,
             },
             body: formData
