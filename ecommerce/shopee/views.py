@@ -4,7 +4,6 @@ import bcrypt
 import jwt
 from .models import UserData
 from datetime import datetime
-from django.views.decorators.csrf import csrf_exempt
 from .models import Product, Category,Order,OrderItem
 
 
@@ -17,8 +16,6 @@ def get_registration_page(request):
     return render(request, 'register.html')
 def get_login_page(request):
     return render(request, 'login.html')
-
-@csrf_exempt
 def post_registration_data(request):
     if request.method == 'POST':
         body = request.POST
@@ -43,7 +40,6 @@ def post_registration_data(request):
         return JsonResponse({'message': 'Method Not Allowed'}, status=405)
     
 #Login_view
-@csrf_exempt
 def check_login(request):
     if request.method == 'POST':
         body = request.POST
@@ -52,15 +48,22 @@ def check_login(request):
 
         try:
             user = UserData.objects.get(email=email)
-
             if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+        
                 payload = {
                     'user_id': user.id,
-                    'email': user.email
+                    'email': user.email,
+                    'role': user.role
                 }
 
                 token = jwt.encode(payload, '8jR2sWnC4xQzHtUyL6vPbM9aZ3gD7eF1sK0oL7jX8wO9tR0hY5sF1iE3oQ1cK6gW2hS4aJ5bP9eV0jU4iO2qD6rH3lN9mS7tP1rY2gT8bA1uO3zR', algorithm='HS256')
-                return JsonResponse({'message': 'success', 'token': token}, status=201)
+
+                return JsonResponse({
+                    'message': 'success',
+                    'token': token,
+                    'role': user.role
+                }, status=201)
+
             else:
                 return JsonResponse({'message': 'Failed'}, status=401)
         except UserData.DoesNotExist:
@@ -69,10 +72,9 @@ def check_login(request):
             print(e)
             return JsonResponse({'message': 'Internal Server Error'}, status=500)
     else:
-        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
-
+        return JsonResponse({'message': 'Method Not Allowed'}, status=405) 
+                 
 #User_Dashboard
-@csrf_exempt
 def get_expense_main_home_page(request):
     return render(request, 'mainHome.html')
 
