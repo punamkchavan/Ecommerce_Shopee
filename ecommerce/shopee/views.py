@@ -78,6 +78,10 @@ def check_login(request):
 def get_expense_main_home_page(request):
     return render(request, 'mainHome.html')
 
+#Admin_Dashboard
+def get_admin_dashboard_page(request):
+   return render(request, 'admin_dashboard.html')
+
 
 #Admin side functions----------------------------------------------------------------------------------------
 

@@ -141,5 +141,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-#LOGIN_URL = '/login/'  # Ensure login URL is properly configured
+LOGIN_URL = '/login/'  # Ensure login URL is properly configured
 #LOGIN_REDIRECT_URL = '/' 

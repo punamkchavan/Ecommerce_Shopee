@@ -11,7 +11,7 @@ class AuthenticateUserMiddleware:
     def __call__(self, request):
         excluded_urls = [
             '/register/', '/login/', '/check-login/',
-             '/','/favicon.ico', '/user/addUser/','/user/check-login','/expense/MainHome/','/expense/MainHome'
+             '/','/favicon.ico', '/user/addUser/','/user/check-login','/expense/MainHome/','/expense/MainHome','/admin/dashboard/','/admin/dashboard'
         ]
         print(request.path_info)
         if request.path_info in excluded_urls:

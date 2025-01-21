@@ -24,4 +24,7 @@ function signOut() {
     window.location.href = '/';
 }
 
- 
+function getCsrfToken() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    return csrfToken;
+};

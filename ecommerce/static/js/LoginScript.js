@@ -1,6 +1,7 @@
 const forgotBtn = document.getElementById('forgotBtn');
 const btnSubmit = document.getElementById('loginForm');
 const divAlert = document.getElementById('div-alert');
+const csrfToken = getCsrfToken();
 if (btnSubmit) {
     btnSubmit.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -13,17 +14,23 @@ if (btnSubmit) {
         try {
             const result = await axios.post('/user/check-login', data, {
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    "X-CSRFToken": csrfToken
                 }
             });
             if (result.data.message === 'success') {
                 const token = result.data.token;
                 localStorage.setItem('token', token);
-                await displayNotification('Login Successful', 'success', divAlert);
-                window.location.href = '/expense/MainHome';
+            
+                if (result.data.role === 'admin') {
+                    await displayNotification('Login Successful as Admin', 'success', divAlert);
+                    window.location.href = '/admin/dashboard'; 
+                } else {
+                    await displayNotification('Login Successful', 'success', divAlert);
+                    window.location.href = '/expense/MainHome'; 
+                }
             }
         } catch (error) {
-            console.log(error);
             if (error.response.data.message) {
                 if (error.response.data.message == 'Failed') {
                     await displayNotification("Invalid Credentials!", 'warning', divAlert);
@@ -82,6 +89,3 @@ function displayNotification(message, type, container) {
         }, 2000);
     });
 }
-
-
-

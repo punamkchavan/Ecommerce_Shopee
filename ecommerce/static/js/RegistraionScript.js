@@ -1,4 +1,5 @@
 const divAlert = document.getElementById('div-alert');
+const csrfToken = getCsrfToken()
 document.getElementById("registrationForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -19,7 +20,8 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         try {
             const response = await axios.post("/user/addUser/", formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    "X-CSRFToken": csrfToken
                 }
             });
 
