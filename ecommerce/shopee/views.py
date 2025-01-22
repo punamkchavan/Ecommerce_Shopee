@@ -5,6 +5,8 @@ import jwt
 from .models import UserData
 from datetime import datetime
 from .models import Product, Category,Order,OrderItem
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 #Dashboard_view
@@ -85,83 +87,4 @@ def get_admin_dashboard_page(request):
 
 #Admin side functions----------------------------------------------------------------------------------------
 
-# List all products
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'products/product_list.html', {'products': products})
-
-#Add new products
-def product_add(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        category_id = request.POST.get('category')
-        price = request.POST.get('price')
-        stock = request.POST.get('stock')
-        image = request.FILES.get('image') 
-    
-        if name and category_id and price and stock:
-            try:
-                category = Category.objects.get(id=category_id) 
-                product = Product(
-                    name=name,
-                    description=description,
-                    category=category,
-                    price=price,
-                    stock=stock,
-                    image=image
-                )
-                product.save()
-                return redirect('admin_product_list') 
-            except Category.DoesNotExist:
-                return render(request, 'products/admin_productform.html', {'error': 'Invalid category'})
-        else:
-            return render(request, 'products/admin_productform.html', {'error': 'All required fields must be filled'})
-
-    categories = Category.objects.all()
-    return render(request, 'products/admin_productform.html', {'categories': categories})
-
-#Edit the products
-def product_edit(request, id):
-    product = get_object_or_404(Product, id=id)  
-    
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        category_id = request.POST.get('category')
-        price = request.POST.get('price')
-        stock = request.POST.get('stock')
-        image = request.FILES.get('image')
-        
-        if name and category_id and price and stock:
-            try:
-                category = Category.objects.get(id=category_id) 
-                product.name = name
-                product.description = description
-                product.category = category
-                product.price = price
-                product.stock = stock
-                
-                if image:
-                    product.image = image 
-                
-                product.save()
-                return redirect('admin_product_list') 
-            except Category.DoesNotExist:
-                return render(request, 'products/admin_productform.html', {'error': 'Invalid category', 'product': product})
-        else:
-            return render(request, 'products/admin_productform.html', {'error': 'All required fields must be filled', 'product': product})
-
-    categories = Category.objects.all()
-    return render(request, 'products/admin_productform.html', {'product': product, 'categories': categories})
-
-#Delete the products
-def product_delete(request, id):
-    product = get_object_or_404(Product, id=id) 
-    
-    if request.method == 'POST':   
-        product.delete()   
-        return redirect('admin_product_list')   
-    return render(request, 'products/admin_product_delete.html', {'product': product})
-
-
+ 

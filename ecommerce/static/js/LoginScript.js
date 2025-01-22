@@ -24,7 +24,7 @@ if (btnSubmit) {
             
                 if (result.data.role === 'admin') {
                     await displayNotification('Login Successful as Admin', 'success', divAlert);
-                    window.location.href = '/admin/dashboard'; 
+                    window.location.href = '/new_dashboard'; 
                 } else {
                     await displayNotification('Login Successful', 'success', divAlert);
                     window.location.href = '/expense/MainHome'; 
