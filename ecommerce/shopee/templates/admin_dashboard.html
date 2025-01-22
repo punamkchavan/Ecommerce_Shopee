@@ -6,8 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="admin-styles.css"> <!-- Link to external CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
 </head>
 <body>
     <style>
@@ -162,11 +161,11 @@ body {
         <div class="container">
             <a href="dashboard.html" class="logo">Admin Panel</a>
             <ul class="nav-links">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="orders.html">Orders</a></li>
-                <li><a href="products.html">Products</a></li>
-                <li><a href="users.html">Users</a></li>
-                <li><a href="settings.html">Settings</a></li>
+                <li><a href="{% url 'admin_home' %}">Dashboard</a></li>
+                <li><a href="{% url 'admin_orders/' %}">Orders</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Users</a></li>
+                 
             </ul>
             <div class="nav-icons">
                 <a href="logout.html" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -181,41 +180,80 @@ body {
             <p>Here's a quick overview of your e-commerce site.</p>
         </div>
     </header>
-
-    <!-- Key Metrics Section -->
     <section class="metrics">
         <div class="container">
             <div class="metrics-grid">
                 <div class="metric-card">
                     <h2>Orders</h2>
-                    <p>120</p>
+                    <p>{{ total_orders }}</p>
                     <a href="orders.html" class="btn">View Orders</a>
                 </div>
                 <div class="metric-card">
                     <h2>Products</h2>
-                    <p>340</p>
+                    <p></p>
                     <a href="products.html" class="btn">Manage Products</a>
                 </div>
                 <div class="metric-card">
                     <h2>Users</h2>
-                    <p>1,240</p>
+                    <p></p>
                     <a href="users.html" class="btn">View Users</a>
                 </div>
-                <div class="metric-card">
-                    <h2>Revenue</h2>
-                    <p>$12,340</p>
-                    <a href="revenue.html" class="btn">View Details</a>
-                </div>
+        
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+
     <footer class="footer">
         <div class="container">
             <p>&copy; 2025 Admin Panel. All rights reserved.</p>
         </div>
     </footer>
 </body>
-<script src="{% static 'js/script.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const currentPage = window.location.pathname.split("/").pop();
+    const navLinks = document.querySelectorAll(".nav-links a");
+
+    navLinks.forEach(link => {
+        if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+        }
+    });
+    fetchDynamicMetrics();
+    const logoutButton = document.querySelector(".logout");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", handleLogout);
+    }
+});
+
+function fetchDynamicMetrics() {
+    const metricsData = {
+        orders: 120,
+        products: 340,
+        users: 1240,
+        revenue: 12340
+    };
+    document.querySelectorAll(".metric-card").forEach(card => {
+        const metricType = card.querySelector("h2").innerText.toLowerCase();
+        const metricValue = metricsData[metricType];
+
+        if (metricValue !== undefined) {
+            card.querySelector("p").innerText = metricType === "revenue" 
+                ? `$${metricValue.toLocaleString()}` 
+                : metricValue.toLocaleString();
+        }
+    });
+}
+ 
+function handleLogout(event) {
+    event.preventDefault();
+
+    const confirmation = confirm("Are you sure you want to logout?");
+    if (confirmation) {
+        window.location.href = "logout.html";
+    }
+}
+
+</script>
 </html>

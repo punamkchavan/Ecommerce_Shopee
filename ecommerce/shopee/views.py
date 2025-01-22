@@ -7,6 +7,9 @@ from datetime import datetime
 from .models import Product, Category,Order,OrderItem
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 #Dashboard_view
@@ -86,5 +89,53 @@ def get_admin_dashboard_page(request):
 
 
 #Admin side functions----------------------------------------------------------------------------------------
+#Admin_Order_view
+@api_view(["GET", "POST", "DELETE"])
+@permission_classes([IsAuthenticated])
+def admin_order_view(request):
+    if request.method == "GET":
+        search_query = request.GET.get("search", "")
+        if search_query:
+            orders = Order.objects.filter(customer_name__icontains=search_query)
+        else:
+            orders = Order.objects.all()
 
- 
+        orders_data = [
+            {
+                "id": order.id,
+                "customer_name": order.customer_name,
+                "total_items": order.total_items,
+                "total_price": order.total_price,
+                "status": order.status,
+                "created_at": order.created_at.isoformat(),
+            }
+            for order in orders
+        ]
+        return Response(orders_data, status=HTTP_200_OK)
+
+    elif request.method == "DELETE":
+        order_id = request.data.get("id")
+        order = get_object_or_404(Order, id=order_id)
+        order.delete()
+        return Response({"message": "Order deleted successfully."}, status=HTTP_200_OK)
+
+    elif request.method == "POST":
+        order_id = request.data.get("id")
+        if order_id:  
+            order = get_object_or_404(Order, id=order_id)
+            order.customer_name = request.data.get("customer_name", order.customer_name)
+            order.total_items = request.data.get("total_items", order.total_items)
+            order.total_price = request.data.get("total_price", order.total_price)
+            order.status = request.data.get("status", order.status)
+            order.save()
+            return Response({"message": "Order updated successfully."}, status=HTTP_200_OK)
+        else:  
+            Order.objects.create(
+                customer_name=request.data["customer_name"],
+                total_items=request.data["total_items"],
+                total_price=request.data["total_price"],
+                status=request.data["status"],
+            )
+            return Response({"message": "Order created successfully."}, status=HTTP_200_OK)
+
+    return Response({"error": "Invalid request method."}, status=HTTP_400_BAD_REQUEST)
